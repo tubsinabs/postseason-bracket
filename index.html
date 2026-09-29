@@ -3,273 +3,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Postseason Bracket Challenge | Made by Tubs</title>
+  <title>MLB Postseason Bracket Challenge 2026</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    :root {
-      --bg-dark: #0b1329;
-      --card-bg: #1e293b;
-      --card-border: #334155;
-      --text-bright: #f8fafc;
-      --accent-gold: #fbbf24;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-bright);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    .card-dark {
-      background-color: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
-
-    .brand-subhead {
-      color: #94a3b8;
-      font-weight: 500;
-    }
-
-    /* Interactive Matchup & Team Cards */
-    .matchup-card {
-      background-color: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
-
-    .team-btn {
-      background-color: #1e293b;
-      color: #ffffff !important;
-      border: 2px solid #475569;
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
-
-    .team-btn:hover {
-      border-color: #94a3b8;
-      background-color: #334155;
-    }
-
-    /* Team Selection Highlights */
-    .team-btn.selected {
-      background-color: #2563eb !important;
-      border-color: #60a5fa !important;
-      box-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
-    }
-
-    /* Specific Team Colors when selected */
-    .team-btn[data-team="Padres"].selected { background-color: #2f241d !important; border-color: #ffc425 !important; color: #ffc425 !important; }
-    .team-btn[data-team="Yankees"].selected { background-color: #0c2340 !important; border-color: #ffffff !important; color: #ffffff !important; }
-    .team-btn[data-team="Red Sox"].selected { background-color: #bd3039 !important; border-color: #0c2340 !important; color: #ffffff !important; }
-    .team-btn[data-team="Dodgers"].selected { background-color: #005a9c !important; border-color: #ffffff !important; color: #ffffff !important; }
-    .team-btn[data-team="Braves"].selected { background-color: #13274f !important; border-color: #ce1141 !important; color: #ffffff !important; }
-    .team-btn[data-team="Phillies"].selected { background-color: #e31837 !important; border-color: #002d62 !important; color: #ffffff !important; }
-    .team-btn[data-team="Brewers"].selected { background-color: #12284c !important; border-color: #ffc52f !important; color: #ffc52f !important; }
-    .team-btn[data-team="Cubs"].selected { background-color: #0e3386 !important; border-color: #cc3433 !important; color: #ffffff !important; }
-    .team-btn[data-team="Astros"].selected { background-color: #002d62 !important; border-color: #eb6e1f !important; color: #ffffff !important; }
-    .team-btn[data-team="White Sox"].selected { background-color: #27251f !important; border-color: #c4ced4 !important; color: #ffffff !important; }
-    .team-btn[data-team="Rays"].selected { background-color: #092c5c !important; border-color: #8fbce6 !important; color: #ffffff !important; }
-    .team-btn[data-team="Guardians"].selected { background-color: #002b5c !important; border-color: #e31937 !important; color: #ffffff !important; }
-
-    .crown-badge {
-      font-size: 1.2rem;
-      margin-right: 4px;
-    }
-
-    .pick-pill {
-      background-color: #334155;
-      color: #f8fafc;
-      border-radius: 4px;
-      padding: 2px 8px;
-      font-size: 0.8rem;
-      margin-right: 4px;
-    }
+    body { background-color: #0b1120; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+    .card-dark { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; }
+    .bracket-container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 15px; margin-top: 20px; }
+    .bracket-col { flex: 1; min-width: 260px; }
+    .matchup-box { background-color: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 15px; }
+    .matchup-title { font-size: 0.8rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; margin-bottom: 8px; }
+    .team-btn { background-color: #1e293b; color: #f8fafc; border: 1px solid #475569; width: 100%; text-align: left; padding: 8px 12px; margin-bottom: 6px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .team-btn:hover:not(:disabled) { background-color: #334155; border-color: #38bdf8; }
+    .team-btn.selected { background-color: #0284c7; border-color: #38bdf8; color: #ffffff; font-weight: bold; }
+    .team-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .slot-btn { background-color: #0f172a; color: #94a3b8; border: 1px dashed #475569; }
+    .slot-btn.filled { background-color: #1e293b; color: #f8fafc; border-style: solid; }
+    .banner-lock { background-color: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: 600; }
+    .player-card { background-color: #0f172a; border: 1px solid #334155; color: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
+    .pick-tag { background-color: #334155; color: #f8fafc; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; margin-right: 5px; display: inline-block; margin-bottom: 4px; }
   </style>
 </head>
 <body class="p-3 p-md-4">
 
-  <div class="container-fluid max-w-7xl">
-    <!-- Header -->
-    <header class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary">
-      <div>
-        <h1 class="h3 mb-0 text-warning fw-bold">⚾ Postseason Bracket Challenge</h1>
-        <p class="brand-subhead small mb-0">Made by Tubs</p>
-      </div>
-      <div class="d-flex align-items-center gap-2">
-        <span id="player-tag" class="badge bg-primary fs-6"></span>
-        <button class="btn btn-outline-warning btn-sm" onclick="showChampionsHall()">🏛️ Champions Hall</button>
-      </div>
-    </header>
-
-    <!-- Modal / Card for Player Identification -->
-    <div id="player-modal" class="card card-dark p-4 mb-4">
-      <h5 class="text-warning mb-2">Welcome to the 2026 Bracket Challenge!</h5>
-      <p class="text-secondary small mb-3">Enter your name and nickname to start picking your bracket and join the leaderboard.</p>
-      <div class="row g-3">
-        <div class="col-md-5">
-          <input type="text" id="input-fullname" class="form-control bg-dark text-light border-secondary" placeholder="Full Name (e.g. Ian Stubbs)">
+  <!-- Player Login Modal -->
+  <div id="player-modal" class="modal fade show d-block" style="background: rgba(0,0,0,0.85);" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content card-dark text-white p-3">
+        <div class="modal-header border-0">
+          <h4 class="modal-title fw-bold">⚾ MLB Postseason Bracket 2026</h4>
         </div>
-        <div class="col-md-5">
-          <input type="text" id="input-nickname" class="form-control bg-dark text-light border-secondary" placeholder="Display Nickname (e.g. Tubs)">
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-warning w-100 fw-bold" onclick="registerUser()">Start Picks</button>
+        <div class="modal-body">
+          <p class="text-slate-300">Enter your name to unlock your bracket card:</p>
+          <input type="text" id="input-fullname" class="form-control mb-3 bg-dark text-white border-secondary" placeholder="Full Name (e.g. Ian Stubbs)">
+          <input type="text" id="input-nickname" class="form-control mb-3 bg-dark text-white border-secondary" placeholder="Display Name / Nickname (e.g. Tubs)">
+          <button class="btn btn-primary w-100 fw-bold py-2" onclick="registerUser()">Start Bracket Picks</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Main Single Page View -->
-    <div id="main-dashboard" class="row g-4" style="display:none;">
-      
-      <!-- Left Column: Interactive Pick Builder -->
-      <div class="col-lg-7">
-        <div class="card card-dark p-4">
-          <h4 class="h5 text-warning mb-1">🎯 Complete Your Postseason Tree</h4>
-          <p class="text-secondary small mb-4">Select winners round-by-round. Picks dynamically flow into the next series!</p>
+  <!-- Main Dashboard -->
+  <div id="main-dashboard" class="container-fluid" style="display:none;">
+    
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 card-dark p-3">
+      <div>
+        <h2 class="fw-bold mb-0 text-white">⚾ 2026 MLB Postseason Bracket</h2>
+        <small class="text-slate-400">Player: <span id="player-tag" class="fw-bold text-info"></span></small>
+      </div>
+      <div>
+        <button class="btn btn-outline-light btn-sm" onclick="showChampionsHall()">🏛️ Champions Hall</button>
+      </div>
+    </div>
 
-          <form id="bracket-tree-form">
+    <!-- Lock Status Notification -->
+    <div id="lock-banner" class="banner-lock" style="display: none;">
+      🔒 Bracket entries are currently locked by the admin. You can view picks and live standings below.
+    </div>
+
+    <div class="row">
+      <!-- Left Column: Visual Bracket Picker -->
+      <div class="col-lg-8 mb-4">
+        <div class="card-dark p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h4 class="fw-bold text-white mb-0">Visual Postseason Bracket</h4>
+            <button id="lock-btn" class="btn btn-success fw-bold" onclick="submitFullBracket()">Lock In Full Bracket 🔒</button>
+          </div>
+          <p class="text-slate-400 small mb-3">Click on a team to advance them through each round to the World Series Championship.</p>
+
+          <div class="bracket-container">
             
-            <!-- Round 1: Wild Card -->
-            <div class="mb-4">
-              <h6 class="text-light fw-bold text-uppercase small border-bottom border-secondary pb-1">Round 1: Wild Card Series (1 Pt)</h6>
-              <div class="row g-2">
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">ALWC #1</div>
-                    <div class="team-btn" data-team="Yankees" onclick="pickTeam('wc_al_1', 'Yankees', 'alds_1_slot')">#4 Yankees</div>
-                    <div class="team-btn" data-team="Red Sox" onclick="pickTeam('wc_al_1', 'Red Sox', 'alds_1_slot')">#5 Red Sox</div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">ALWC #2</div>
-                    <div class="team-btn" data-team="Astros" onclick="pickTeam('wc_al_2', 'Astros', 'alds_2_slot')">#3 Astros</div>
-                    <div class="team-btn" data-team="White Sox" onclick="pickTeam('wc_al_2', 'White Sox', 'alds_2_slot')">#6 White Sox</div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">NLWC #1</div>
-                    <div class="team-btn" data-team="Padres" onclick="pickTeam('wc_nl_1', 'Padres', 'nlds_1_slot')">#4 Padres</div>
-                    <div class="team-btn" data-team="Cubs" onclick="pickTeam('wc_nl_1', 'Cubs', 'nlds_1_slot')">#5 Cubs</div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">NLWC #2</div>
-                    <div class="team-btn" data-team="Braves" onclick="pickTeam('wc_nl_2', 'Braves', 'nlds_2_slot')">#3 Braves</div>
-                    <div class="team-btn" data-team="Phillies" onclick="pickTeam('wc_nl_2', 'Phillies', 'nlds_2_slot')">#6 Phillies</div>
-                  </div>
-                </div>
+            <!-- AL Side -->
+            <div class="bracket-col">
+              <h6 class="text-center text-info fw-bold mb-3">AMERICAN LEAGUE</h6>
+              
+              <!-- AL Wild Card 1 -->
+              <div class="matchup-box">
+                <div class="matchup-title">ALWC #1</div>
+                <button class="team-btn" onclick="pickTeam('alwc1', 'Yankees', 'alds1-slot1')">Yankees</button>
+                <button class="team-btn" onclick="pickTeam('alwc1', 'Red Sox', 'alds1-slot1')">Red Sox</button>
+              </div>
+
+              <!-- AL Wild Card 2 -->
+              <div class="matchup-box">
+                <div class="matchup-title">ALWC #2</div>
+                <button class="team-btn" onclick="pickTeam('alwc2', 'Astros', 'alds2-slot1')">Astros</button>
+                <button class="team-btn" onclick="pickTeam('alwc2', 'Guardians', 'alds2-slot1')">Guardians</button>
+              </div>
+
+              <!-- ALDS 1 -->
+              <div class="matchup-box">
+                <div class="matchup-title">ALDS #1</div>
+                <button class="team-btn disabled" disabled>Orioles (Bye)</button>
+                <button id="alds1-slot1" class="team-btn slot-btn" data-team="TBD" onclick="pickSlotTeam('alds1', 'alds1-slot1', 'alcs-slot1')">TBD (ALWC Winner)</button>
+              </div>
+
+              <!-- ALDS 2 -->
+              <div class="matchup-box">
+                <div class="matchup-title">ALDS #2</div>
+                <button class="team-btn disabled" disabled>Mariners (Bye)</button>
+                <button id="alds2-slot1" class="team-btn slot-btn" data-team="TBD" onclick="pickSlotTeam('alds2', 'alds2-slot1', 'alcs-slot2')">TBD (ALWC Winner)</button>
+              </div>
+
+              <!-- ALCS -->
+              <div class="matchup-box border-info">
+                <div class="matchup-title">AL Pennant (ALCS)</div>
+                <button id="alcs-slot1" class="team-btn slot-btn" data-team="TBD" onclick="pickSlotTeam('alcs', 'alcs-slot1', 'ws-slot1')">TBD (ALDS Winner)</button>
+                <button id="alcs-slot2" class="team-btn slot-btn" data-team="TBD" onclick="pickSlotTeam('alcs', 'alcs-slot2', 'ws-slot1')">TBD (ALDS Winner)</button>
               </div>
             </div>
 
-            <!-- Round 2: Division Series -->
-            <div class="mb-4">
-              <h6 class="text-light fw-bold text-uppercase small border-bottom border-secondary pb-1">Round 2: Division Series (3 Pts)</h6>
-              <div class="row g-2">
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">ALDS #1</div>
-                    <div class="team-btn" data-team="Rays" onclick="pickTeam('alds_1', 'Rays', 'alcs_slot1')">#1 Rays</div>
-                    <div class="team-btn text-muted" id="alds_1_slot" data-team="TBD" onclick="pickSlotTeam('alds_1', 'alds_1_slot', 'alcs_slot1')">Winner ALWC #1</div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">ALDS #2</div>
-                    <div class="team-btn" data-team="Guardians" onclick="pickTeam('alds_2', 'Guardians', 'alcs_slot2')">#2 Guardians</div>
-                    <div class="team-btn text-muted" id="alds_2_slot" data-team="TBD" onclick="pickSlotTeam('alds_2', 'alds_2_slot', 'alcs_slot2')">Winner ALWC #2</div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">NLDS #1</div>
-                    <div class="team-btn" data-team="Brewers" onclick="pickTeam('nlds_1', 'Brewers', 'nlcs_slot1')">#1 Brewers</div>
-                    <div class="team-btn text-muted" id="nlds_1_slot" data-team="TBD" onclick="pickSlotTeam('nlds_1', 'nlds_1_slot', 'nlcs_slot1')">Winner NLWC #1</div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">NLDS #2</div>
-                    <div class="team-btn" data-team="Dodgers" onclick="pickTeam('nlds_2', 'Dodgers', 'nlcs_slot2')">#2 Dodgers</div>
-                    <div class="team-btn text-muted" id="nlds_2_slot" data-team="TBD" onclick="pickSlotTeam('nlds_2', 'nlds_2_slot', 'nlcs_slot2')">Winner NLWC #2</div>
-                  </div>
-                </div>
+            <!-- World Series Center -->
+            <div class="bracket-col text-center d-flex flex-column justify-content-center">
+              <div class="matchup-box border-warning" style="background-color: #1e1b4b;">
+                <div class="matchup-title text-warning fw-bold fs-5">🏆 WORLD SERIES</div>
+                <p class="small text-slate-300 mb-2">Select World Series Champion:</p>
+                <button id="ws-slot1" class="team-btn slot-btn mb-2 text-center" data-team="TBD" onclick="pickSlotTeam('ws', 'ws-slot1', null)">AL Champion</button>
+                <button id="ws-slot2" class="team-btn slot-btn text-center" data-team="TBD" onclick="pickSlotTeam('ws', 'ws-slot2', null)">NL Champion</button>
               </div>
             </div>
 
-            <!-- Round 3: Championship Series -->
-            <div class="mb-4">
-              <h6 class="text-light fw-bold text-uppercase small border-bottom border-secondary pb-1">Round 3: Championship Series (5 Pts)</h6>
-              <div class="row g-2">
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">ALCS</div>
-                    <div class="team-btn text-muted" id="alcs_slot1" onclick="pickSlotTeam('alcs', 'alcs_slot1', 'ws_al_slot')">ALDS Winner #1</div>
-                    <div class="team-btn text-muted" id="alcs_slot2" onclick="pickSlotTeam('alcs', 'alcs_slot2', 'ws_al_slot')">ALDS Winner #2</div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="matchup-card">
-                    <div class="text-secondary x-small mb-1">NLCS</div>
-                    <div class="team-btn text-muted" id="nlcs_slot1" onclick="pickSlotTeam('nlcs', 'nlcs_slot1', 'ws_nl_slot')">NLDS Winner #1</div>
-                    <div class="team-btn text-muted" id="nlcs_slot2" onclick="pickSlotTeam('nlcs', 'nlcs_slot2', 'ws_nl_slot')">NLDS Winner #2</div>
-                  </div>
-                </div>
+            <!-- NL Side -->
+            <div class="bracket-col">
+              <h6 class="text-center text-info fw-bold mb-3">NATIONAL LEAGUE</h6>
+
+              <!-- NL Wild Card 1 -->
+              <div class="matchup-box">
+                <div class="matchup-title">NLWC #1</div>
+                <button class="team-btn" onclick="pickTeam('nlwc1', 'Padres', 'nlds1-slot1')">Padres</button>
+                <button class="team-btn" onclick="pickTeam('nlwc1', 'Cubs', 'nlds1-slot1')">Cubs</button>
+              </div>
+
+              <!-- NL Wild Card 2 -->
+              <div class="matchup-box">
+                <div class="matchup-title">NLWC #2</div>
+                <button class="team-btn" onclick="pickTeam('nlwc2', 'Braves', 'nlds2-slot1')">Braves</button>
+                <button class="team-btn" onclick="pickTeam('nlwc2', 'Mets', 'nlds2-slot1')">Mets</button>
+              </div>
+
+              <!-- NLDS 1 -->
+              <div class="matchup-box">
+                <div class="matchup-title">NLDS #1</div>
+                <button class="team-btn disabled" disabled>Dodgers (Bye)</button>
+                <button id="nlds1-slot1" class="team-btn slot-btn" data-team="TBD" onclick="pickSlotTeam('nlds1', 'nlds1-slot1', 'nlcs-slot1')">TBD (NLWC Winner)</button>
+              </div>
+
+              <!-- NLDS 2 -->
+              <div class="matchup-box">
+                <div class="matchup-title">NLDS #2</div>
+                <button class="team-btn disabled" disabled>Phillies (Bye)</button>
+                <button id="nlds2-slot1" class="team-btn slot-btn" data-team="TBD" onclick="pickSlotTeam('nlds2', 'nlds2-slot1', 'nlcs-slot2')">TBD (NLWC Winner)</button>
+              </div>
+
+              <!-- NLCS -->
+              <div class="matchup-box border-info">
+                <div class="matchup-title">NL Pennant (NLCS)</div>
+                <button id="nlcs-slot1" class="team-btn slot-btn" data-team="TBD" onclick="pickSlotTeam('nlcs', 'nlcs-slot1', 'ws-slot2')">TBD (NLDS Winner)</button>
+                <button id="nlcs-slot2" class="team-btn slot-btn" data-team="TBD" onclick="pickSlotTeam('nlcs', 'nlcs-slot2', 'ws-slot2')">TBD (NLDS Winner)</button>
               </div>
             </div>
 
-            <!-- Round 4: World Series -->
-            <div class="mb-4">
-              <h6 class="text-light fw-bold text-uppercase small border-bottom border-secondary pb-1">Round 4: World Series (10 Pts)</h6>
-              <div class="matchup-card">
-                <div class="text-secondary x-small mb-1">2026 World Series</div>
-                <div class="row g-2">
-                  <div class="col-6">
-                    <div class="team-btn text-muted" id="ws_al_slot" onclick="pickSlotTeam('ws', 'ws_al_slot', null)">AL Champion</div>
-                  </div>
-                  <div class="col-6">
-                    <div class="team-btn text-muted" id="ws_nl_slot" onclick="pickSlotTeam('ws', 'ws_nl_slot', null)">NL Champion</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <button type="button" class="btn btn-success btn-lg w-100 fw-bold" onclick="submitFullBracket()">Lock In Full Bracket</button>
-          </form>
+          </div>
         </div>
       </div>
 
-      <!-- Right Column: Live Standings & All Group Picks -->
-      <div class="col-lg-5">
+      <!-- Right Column: Standings & Player Picks -->
+      <div class="col-lg-4">
         
-        <!-- Live Standings -->
-        <div class="card card-dark p-4 mb-4">
-          <h4 class="h5 text-warning mb-3">🏆 Live Standings</h4>
+        <!-- Bright Live Standings -->
+        <div class="card-dark p-3 mb-4">
+          <h4 class="fw-bold text-white mb-3">🏆 Live Standings</h4>
           <div id="standings-container">
-            <!-- Rendered dynamically -->
+            <p class="text-slate-400 small">Loading standings...</p>
           </div>
         </div>
 
-        <!-- All Players' Picks Live Board -->
-        <div class="card card-dark p-4">
-          <h4 class="h5 text-light mb-1">👥 Group Picks & Rando Board</h4>
-          <p class="text-secondary small mb-3">See everyone's active picks side-by-side in real time.</p>
-          <div id="group-picks-board">
-            <!-- Rendered dynamically -->
+        <!-- Clean Player's Picks Board -->
+        <div class="card-dark p-3">
+          <h4 class="fw-bold text-white mb-3">📋 Player's Picks</h4>
+          <div id="player-picks-board">
+            <p class="text-slate-400 small">No picks locked in yet.</p>
           </div>
         </div>
 
@@ -278,21 +192,24 @@
   </div>
 
   <script>
-	const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZZ-TFyHbzjX6rK3bA0kiuJp5NaxYJaiumvYl3cAqJh8lCcbmbZn6F0fyKnSWaB4qy_A/exec"
-	
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzewBQe0-BBMKTBMHC5WY5EG365xLycNE6wKYUIdJtsdcc-_vImx_LiXmuWP8yC_u9GJw/exec";
+
     const userPicks = {};
     let currentUser = null;
+    let isBracketLocked = false;
 
     window.onload = function() {
       const savedUser = localStorage.getItem('postseason_user');
       if (savedUser) {
         currentUser = JSON.parse(savedUser);
+        document.getElementById('player-modal').classList.remove('d-block');
         document.getElementById('player-modal').style.display = 'none';
-        document.getElementById('main-dashboard').style.display = 'flex';
+        document.getElementById('main-dashboard').style.display = 'block';
         document.getElementById('player-tag').innerText = currentUser.nickname;
       }
-      renderStandings();
-      renderGroupBoard();
+      checkLockStatus();
+      fetchLiveStandings();
+      fetchPlayerPicks();
     };
 
     function registerUser() {
@@ -311,29 +228,61 @@
       };
 
       localStorage.setItem('postseason_user', JSON.stringify(currentUser));
+
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith('http')) {
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            action: 'registerPlayer',
+            playerId: currentUser.id,
+            fullName: currentUser.fullName,
+            nickname: currentUser.nickname
+          })
+        }).catch(err => console.log('Registration offline:', err));
+      }
+
+      document.getElementById('player-modal').classList.remove('d-block');
       document.getElementById('player-modal').style.display = 'none';
-      document.getElementById('main-dashboard').style.display = 'flex';
+      document.getElementById('main-dashboard').style.display = 'block';
       document.getElementById('player-tag').innerText = currentUser.nickname;
     }
 
+    async function checkLockStatus() {
+      if (!GOOGLE_SCRIPT_URL || !GOOGLE_SCRIPT_URL.startsWith('http')) return;
+      try {
+        const res = await fetch(GOOGLE_SCRIPT_URL + "?action=getLockStatus");
+        const data = await res.json();
+        if (data.locked) {
+          isBracketLocked = true;
+          document.getElementById('lock-banner').style.display = 'block';
+          document.getElementById('lock-btn').disabled = true;
+          document.querySelectorAll('.team-btn').forEach(btn => btn.disabled = true);
+        }
+      } catch (e) {
+        console.log("Lock status check offline");
+      }
+    }
+
     function pickTeam(matchupId, teamName, nextSlotId) {
+      if (isBracketLocked) return;
       userPicks[matchupId] = teamName;
 
-      // Style active button
       const card = event.currentTarget.parentElement;
       card.querySelectorAll('.team-btn').forEach(btn => btn.classList.remove('selected'));
       event.currentTarget.classList.add('selected');
 
-      // Forward team to next round slot
       if (nextSlotId) {
         const nextSlot = document.getElementById(nextSlotId);
         nextSlot.innerText = teamName;
         nextSlot.setAttribute('data-team', teamName);
-        nextSlot.classList.remove('text-muted');
+        nextSlot.classList.add('filled');
       }
     }
 
     function pickSlotTeam(matchupId, currentSlotId, nextSlotId) {
+      if (isBracketLocked) return;
       const slotBtn = document.getElementById(currentSlotId);
       const teamName = slotBtn.getAttribute('data-team');
 
@@ -344,7 +293,7 @@
 
       userPicks[matchupId] = teamName;
 
-      const card = slotBtn.parentElement.classList.contains('matchup-card') ? slotBtn.parentElement : slotBtn.parentElement.parentElement;
+      const card = slotBtn.parentElement;
       card.querySelectorAll('.team-btn').forEach(btn => btn.classList.remove('selected'));
       slotBtn.classList.add('selected');
 
@@ -352,45 +301,120 @@
         const nextSlot = document.getElementById(nextSlotId);
         nextSlot.innerText = teamName;
         nextSlot.setAttribute('data-team', teamName);
-        nextSlot.classList.remove('text-muted');
+        nextSlot.classList.add('filled');
       }
     }
 
-    function renderStandings() {
-      // 2025 Reigning Champion Jake gets the crown
-      const players = [
-        { name: "Jake", points: 0, isChamp: true },
-        { name: currentUser ? currentUser.nickname : "Tubs", points: 0, isChamp: false },
-        { name: "Rando Bot", points: 0, isChamp: false }
-      ];
+    async function fetchLiveStandings() {
+      if (!GOOGLE_SCRIPT_URL || !GOOGLE_SCRIPT_URL.startsWith('http')) {
+        renderFallbackStandings();
+        return;
+      }
 
-      const html = players.map(p => `
-        <div class="d-flex justify-content-between align-items-center p-3 mb-2 rounded" style="background-color: #0f172a; border: 1px solid #334155;">
-          <span class="fw-bold">${p.isChamp ? '<span class="crown-badge">👑</span>' : ''}${p.name}</span>
-          <span class="badge bg-warning text-dark fs-6">${p.points} PTS</span>
+      try {
+        const res = await fetch(GOOGLE_SCRIPT_URL + "?action=getPlayers");
+        const playersData = await res.json();
+        
+        if (playersData && playersData.length > 1) {
+          const html = playersData.slice(1).map(row => {
+            const name = row[2] || row[1];
+            const isChamp = row[0] === 'jake-stubbs';
+            return `
+              <div class="d-flex justify-content-between align-items-center p-3 mb-2 rounded" style="background-color: #0f172a; border: 1px solid #334155; color: #f8fafc;">
+                <span class="fw-bold fs-6">${isChamp ? '👑 ' : ''}${name}</span>
+                <span class="badge bg-warning text-dark fs-6 font-monospace">0 PTS</span>
+              </div>
+            `;
+          }).join('');
+
+          document.getElementById('standings-container').innerHTML = html;
+        } else {
+          renderFallbackStandings();
+        }
+      } catch (err) {
+        renderFallbackStandings();
+      }
+    }
+
+    function renderFallbackStandings() {
+      const html = `
+        <div class="d-flex justify-content-between align-items-center p-3 mb-2 rounded" style="background-color: #0f172a; border: 1px solid #334155; color: #f8fafc;">
+          <span class="fw-bold fs-6">${currentUser ? currentUser.nickname : 'Player'}</span>
+          <span class="badge bg-warning text-dark fs-6 font-monospace">0 PTS</span>
         </div>
-      `).join('');
-
+      `;
       document.getElementById('standings-container').innerHTML = html;
     }
 
-    function renderGroupBoard() {
-      const html = `
-        <div class="p-3 rounded mb-3" style="background-color: #0f172a; border: 1px solid #334155;">
-          <div class="fw-bold text-warning mb-2">👑 Jake (Reigning Champ)</div>
-          <div><span class="pick-pill">ALWC: Yankees, Astros</span><span class="pick-pill">NLWC: Padres, Braves</span></div>
-        </div>
-        <div class="p-3 rounded mb-3" style="background-color: #0f172a; border: 1px solid #334155;">
-          <div class="fw-bold text-info mb-2">🤖 Rando Bot (Day 1 Locked)</div>
-          <div><span class="pick-pill">ALWC: Red Sox, White Sox</span><span class="pick-pill">NLWC: Padres, Phillies</span></div>
-        </div>
-      `;
-      document.getElementById('group-picks-board').innerHTML = html;
+    async function fetchPlayerPicks() {
+      if (!GOOGLE_SCRIPT_URL || !GOOGLE_SCRIPT_URL.startsWith('http')) return;
+
+      try {
+        const res = await fetch(GOOGLE_SCRIPT_URL + "?action=getPicks");
+        const picksData = await res.json();
+
+        if (picksData && picksData.length > 1) {
+          // Group picks by player ID
+          const playerMap = {};
+          picksData.slice(1).forEach(row => {
+            const playerId = row[1];
+            const team = row[4];
+            if (!playerMap[playerId]) playerMap[playerId] = [];
+            playerMap[playerId].push(team);
+          });
+
+          const html = Object.keys(playerMap).map(pId => `
+            <div class="player-card">
+              <div class="fw-bold text-info mb-2">${pId.replace(/-/g, ' ').toUpperCase()}</div>
+              <div>${playerMap[pId].map(t => `<span class="pick-tag">${t}</span>`).join('')}</div>
+            </div>
+          `).join('');
+
+          document.getElementById('player-picks-board').innerHTML = html;
+        }
+      } catch (err) {
+        console.log("Could not fetch player picks yet");
+      }
     }
 
     function submitFullBracket() {
+      if (isBracketLocked) {
+        alert('Brackets are locked for this postseason.');
+        return;
+      }
+
+      if (!currentUser) {
+        alert('Please enter your name first!');
+        return;
+      }
+
+      const picksList = Object.keys(userPicks).map(matchupId => ({
+        round: matchupId.includes('wc') ? 'WC' : matchupId.includes('ds') ? 'DS' : matchupId === 'ws' ? 'WS' : 'CS',
+        matchupId: matchupId,
+        pickedTeam: userPicks[matchupId]
+      }));
+
+      if (picksList.length === 0) {
+        alert('Please make at least one bracket pick before locking in!');
+        return;
+      }
+
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith('http')) {
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            action: 'savePicks',
+            playerId: currentUser.id,
+            picks: picksList
+          })
+        }).catch(err => console.log('Saved offline:', err));
+      }
+
       confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
-      alert('Your full postseason bracket is locked in! Good luck!');
+      alert('Your postseason bracket picks are locked in and synced!');
+      fetchPlayerPicks();
     }
 
     function showChampionsHall() {
